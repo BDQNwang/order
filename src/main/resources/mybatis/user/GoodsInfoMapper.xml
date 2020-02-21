@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.order.mapper.GoodsInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bdqn.order.pojo.GoodsInfo">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+    <result column="goods_count" jdbcType="INTEGER" property="goodsCount" />
+    <result column="auth_state" jdbcType="CHAR" property="authState" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bdqn.order.pojo.GoodsInfo">
+    <result column="goods_info" jdbcType="LONGVARCHAR" property="goodsInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    goods_id, goods_name, pic_url, goods_price, goods_count, auth_state
+  </sql>
+  <sql id="Blob_Column_List">
+    goods_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wm_goods_info
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wm_goods_info
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    insert into wm_goods_info (goods_id, goods_name, pic_url, 
+      goods_price, goods_count, auth_state, 
+      goods_info)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{goodsPrice,jdbcType=DECIMAL}, #{goodsCount,jdbcType=INTEGER}, #{authState,jdbcType=CHAR}, 
+      #{goodsInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    insert into wm_goods_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="goodsCount != null">
+        goods_count,
+      </if>
+      <if test="authState != null">
+        auth_state,
+      </if>
+      <if test="goodsInfo != null">
+        goods_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsCount != null">
+        #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="authState != null">
+        #{authState,jdbcType=CHAR},
+      </if>
+      <if test="goodsInfo != null">
+        #{goodsInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    update wm_goods_info
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsCount != null">
+        goods_count = #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="authState != null">
+        auth_state = #{authState,jdbcType=CHAR},
+      </if>
+      <if test="goodsInfo != null">
+        goods_info = #{goodsInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    update wm_goods_info
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      goods_count = #{goodsCount,jdbcType=INTEGER},
+      auth_state = #{authState,jdbcType=CHAR},
+      goods_info = #{goodsInfo,jdbcType=LONGVARCHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    update wm_goods_info
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      goods_count = #{goodsCount,jdbcType=INTEGER},
+      auth_state = #{authState,jdbcType=CHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateGoodsStock" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    update wm_goods_info
+    set
+      goods_count = goods_count - #{goodsCount,jdbcType=INTEGER},
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+     and goods_count - #{goodsCount,jdbcType=INTEGER}>0
+  </update>
+
+  <select id="selectGoodsList" resultMap="BaseResultMap" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    select
+    <include refid="Base_Column_List" />
+    from wm_goods_info
+    <where>
+      <if test="goodsName != null">
+        and goods_name like concat('%', #{goodsName}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectGoodsCount" resultType="int" parameterType="com.bdqn.order.pojo.GoodsInfo">
+    select count(1) from wm_goods_info
+    <where>
+      <if test="goodsName != null">
+        and goods_name like concat('%', #{goodsName}, '%')
+      </if>
+    </where>
+  </select>
+</mapper>

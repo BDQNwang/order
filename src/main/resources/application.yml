@@ -1,0 +1,28 @@
+server:
+  port: 8082
+
+#jdbc
+spring:
+  redis:
+     host: 192.168.1.103
+     port: 6379
+     password: redis
+     max-wait: -1
+     max-idle: 8
+     min-idle: 0
+     max-active: 10
+     timeout: 30000
+  application:
+    name: order
+  datasource:
+    url: jdbc:mysql:127.0.0.1:3306\order
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+#mybatis
+mybatis:
+  type-aliases-package: com.bdqn.order.pojo
+
+  mapperLocations: classpath*:mybatis/**/*Mapper.xml
+
